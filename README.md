@@ -68,14 +68,6 @@ mongo-node/
    ```
    Visita: `http://localhost:3001`
 
-## 📸 Screenshots
-
-*(Aquí puedes colocar tus propias capturas de pantalla)*
-
-| Inicio (Glassmorphism) | Feed de Publicaciones |
-| :---: | :---: |
-| ![Home](https://images.unsplash.com/photo-1614850523296-d8c1af93d400?auto=format&fit=crop&q=80&w=400) | ![Feed](https://images.unsplash.com/photo-1432888622747-4eb9a8f2c1d8?auto=format&fit=crop&q=80&w=400) |
-
 ## ✒️ Autor
 
 Desarrollado con ❤️ por **Luis Galvan**.

@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Explorar - Luis Galvan</title>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary-dark: #0f2027;
+      --secondary-dark: #203a43;
+      --accent-blue: #2c5364;
+      --light-bg: #f8fafc;
+    }
+    body { font-family: 'Outfit', sans-serif; background-color: var(--light-bg); color: #1c1e21; margin: 0; }
+    
+    nav { 
+      background: linear-gradient(90deg, var(--primary-dark) 0%, var(--secondary-dark) 100%) !important; 
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1) !important; 
+      height: 70px; 
+      line-height: 70px; 
+      z-index: 100;
+      width: 100%;
+    }
+    .brand-logo { font-family: 'Playfair Display', serif; color: #fff !important; font-size: 1.8rem !important; padding-left: 20px !important; }
+    nav ul a { color: rgba(255,255,255,0.7) !important; font-weight: 500; transition: all 0.3s ease; }
+    nav ul a:hover { color: #fff !important; background: rgba(255,255,255,0.1); }
+    .active-nav { border-bottom: 3px solid #81d4fa; }
+
+    .container { width: 90%; max-width: 1100px; }
+    .section-title { margin-top: 50px; margin-bottom: 40px; font-weight: 700; color: var(--primary-dark); font-size: 2.2rem; }
+    
+    .post-card { 
+      background: white; 
+      border-radius: 20px; 
+      overflow: hidden; 
+      box-shadow: 0 4px 20px rgba(0,0,0,0.06); 
+      transition: transform 0.3s ease;
+      margin-bottom: 40px;
+      border: 1px solid rgba(0,0,0,0.05);
+      position: relative;
+    }
+    .post-card:hover { transform: translateY(-5px); }
+    
+    .post-header { padding: 20px; display: flex; align-items: center; border-bottom: 1px solid #f1f5f9; }
+    .avatar { width: 40px; height: 40px; border-radius: 12px; background: var(--primary-dark); display: flex; align-items: center; justify-content: center; margin-right: 15px; color: white; }
+    .author-info .name { font-weight: 600; font-size: 1.05rem; display: block; color: var(--primary-dark); }
+    .author-info .date { font-size: 0.8rem; color: #94a3b8; }
+    
+    .post-image { width: 100%; height: 350px; object-fit: cover; }
+    .post-content { padding: 25px; }
+    .post-title { font-weight: 700; font-size: 1.4rem; margin-bottom: 12px; color: var(--primary-dark); }
+    .post-text { color: #475569; line-height: 1.7; font-size: 1.05rem; margin-bottom: 20px; }
+    
+    .tag { background: #f1f5f9; color: #64748b; padding: 6px 14px; border-radius: 10px; font-size: 0.85rem; font-weight: 600; margin-right: 8px; display: inline-block; }
+    
+    .dropdown-content { border-radius: 12px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); border: none; }
+    .dropdown-content li > a { color: var(--primary-dark); padding: 15px 20px; }
+
+    .fab-btn { position: fixed; bottom: 40px; right: 40px; background: var(--primary-dark) !important; }
+    
+    /* Modal Styling */
+    .modal { border-radius: 20px; max-width: 450px; }
+    .modal .modal-content { padding: 30px; }
+    .modal-footer { background: #f8fafc !important; padding: 15px 30px !important; height: auto !important; }
+    .btn-modal { border-radius: 10px; font-weight: 600; }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <div class="nav-wrapper" style="width: 100%; max-width: none;">
+      <a href="/" class="brand-logo">Luis Galvan</a>
+      <ul class="right hide-on-med-and-down" style="margin-right: 20px;">
+        <li><a href="/">Inicio</a></li>
+        <li class="active-nav"><a href="/posts">Explorar</a></li>
+        <li><a href="/posts/create">Nuevo Post</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <div class="container">
+    <div class="row">
+      <div class="col s12">
+        <h2 class="section-title">Feed Global</h2>
+      </div>
+      
+      <% if (posts && posts.length > 0) { %>
+        <% posts.forEach(post => { %>
+          <div class="col s12 m10 offset-m1 l8 offset-l2">
+            <div class="post-card">
+              <div class="post-header">
+                <div class="avatar">
+                  <i class="material-icons">person</i>
+                </div>
+                <div class="author-info">
+                  <span class="name"><%= post.user ? (post.user.name + ' ' + post.user.lastName) : 'Usuario Anónimo' %></span>
+                  <span class="date"><%= new Date(post.createdAt).toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric' }) %></span>
+                </div>
+                
+                <div style="flex-grow: 1;"></div>
+                
+                <a class='dropdown-trigger btn-flat grey-text' href='#' data-target='dropdown-<%= post._id %>'>
+                  <i class="material-icons">more_vert</i>
+                </a>
+                <ul id='dropdown-<%= post._id %>' class='dropdown-content'>
+                  <li><a href="/posts/edit/<%= post._id %>" class="teal-text"><i class="material-icons">edit</i> Editar</a></li>
+                  <li class="divider"></li>
+                  <li>
+                    <a href="#modal-delete" class="modal-trigger red-text" onclick="setDeleteAction('<%= post._id %>', '<%= post.title %>')">
+                      <i class="material-icons">delete</i> Eliminar
+                    </a>
+                  </li>
+                </ul>
+              </div>
+
+              <% if (post.imageUrl) { %>
+                <img src="<%= post.imageUrl %>" class="post-image" onerror="this.src='https://images.unsplash.com/photo-1516259762381-22954d7d3ad2?auto=format&fit=crop&q=80&w=1000'">
+              <% } %>
+
+              <div class="post-content">
+                <h3 class="post-title"><%= post.title %></h3>
+                <p class="post-text"><%= post.content %></p>
+                
+                <div class="hashtag-container">
+                  <% if (post.hashtags && post.hashtags.length > 0) { %>
+                    <% post.hashtags.forEach(tag => { %>
+                      <span class="tag">#<%= tag %></span>
+                    <% }) %>
+                  <% } %>
+                </div>
+              </div>
+            </div>
+          </div>
+        <% }) %>
+      <% } else { %>
+        <div class="col s12 center-align" style="padding: 100px 0;">
+          <i class="material-icons large grey-text text-lighten-2">cloud_off</i>
+          <h4 class="grey-text">No hay nada por aquí todavía</h4>
+          <a href="/posts/create" class="btn-large blue-grey darken-3 waves-effect" style="margin-top: 30px; border-radius: 12px;">Crear Publicación</a>
+        </div>
+      <% } %>
+    </div>
+  </div>
+
+  <a href="/posts/create" class="btn-floating btn-large waves-effect waves-light fab-btn z-depth-4">
+    <i class="material-icons">add</i>
+  </a>
+
+  <!-- Delete Confirmation Modal -->
+  <div id="modal-delete" class="modal">
+    <div class="modal-content">
+      <h5 style="font-weight: 700; color: #b71c1c;">Eliminar Publicación</h5>
+      <p style="color: #546e7a; font-size: 1.1rem; margin-top: 15px;">
+        ¿Estás seguro de que deseas eliminar la publicación <strong id="delete-post-title" style="color: #1c1e21;"></strong>?
+      </p>
+      <p class="grey-text" style="font-size: 0.9rem;">Esta acción es irreversible y el contenido se perderá permanentemente.</p>
+    </div>
+    <div class="modal-footer">
+      <a href="#!" class="modal-close btn-flat grey-text" style="margin-right: 10px;">Cancelar</a>
+      <form id="delete-form" action="" method="POST" style="display: inline;">
+        <button type="submit" class="btn btn-modal red darken-2 waves-effect waves-light">Confirmar Eliminación</button>
+      </form>
+    </div>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      // Initialize Dropdowns
+      var dropdowns = document.querySelectorAll('.dropdown-trigger');
+      M.Dropdown.init(dropdowns, { constrainWidth: false, coverTrigger: false, alignment: 'right' });
+      
+      // Initialize Modal
+      var modals = document.querySelectorAll('.modal');
+      M.Modal.init(modals);
+    });
+
+    function setDeleteAction(postId, postTitle) {
+      const form = document.getElementById('delete-form');
+      form.action = '/posts/delete/' + postId;
+      document.getElementById('delete-post-title').innerText = '"' + postTitle + '"';
+    }
+  </script>
+</body>
+</html>

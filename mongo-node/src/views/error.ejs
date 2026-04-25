@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Error - Social Media</title>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Outfit', sans-serif; background-color: #f4f7f6; display: flex; align-items: center; justify-content: center; height: 100vh; margin: 0; }
+    .error-card { background: white; padding: 50px; border-radius: 20px; box-shadow: 0 15px 35px rgba(0,0,0,0.05); text-align: center; max-width: 500px; }
+    .error-icon { font-size: 80px; color: #e53935; margin-bottom: 20px; }
+  </style>
+</head>
+<body>
+
+  <div class="error-card">
+    <i class="material-icons error-icon">error_outline</i>
+    <h4 style="color: #37474f;">¡Ups! Algo salió mal</h4>
+    <p class="grey-text text-darken-1" style="font-size: 1.1rem; margin-bottom: 30px;"><%= error %></p>
+    <a href="/posts" class="btn-large blue-grey darken-3 waves-effect waves-light">
+      <i class="material-icons left">arrow_back</i> Volver a Explorar
+    </a>
+  </div>
+
+</body>
+</html>
